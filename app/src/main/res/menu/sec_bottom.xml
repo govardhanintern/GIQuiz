@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/mcq"
+        android:icon="@drawable/mcq"
+        android:title="MCQ" />
+
+    <item
+        android:id="@+id/program"
+        android:icon="@drawable/program"
+        android:title="Program" />
+
+    <item
+        android:id="@+id/videos"
+        android:icon="@drawable/video"
+        android:title="Videos" />
+
+    <item
+        android:id="@+id/preview"
+        android:icon="@drawable/preview"
+        android:title="Preview Exam" />
+
+    <item
+        android:id="@+id/inExam"
+        android:icon="@drawable/info"
+        android:title="International Exam" />
+
+
+</menu>

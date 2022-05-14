@@ -1,0 +1,230 @@
+{
+  "project_info": {
+    "project_number": "644620063221",
+    "project_id": "schoolproject-b2838",
+    "storage_bucket": "schoolproject-b2838.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644620063221:android:e491871b862c3b645890bc",
+        "android_client_info": {
+          "package_name": "com.gi.busdriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "644620063221-n0clri8lrkdfj6ejltslhe6rtomdpf96.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gi.busdriver",
+            "certificate_hash": "666602ee32b0c4efe2ea4743e8e94d1fa0abd43e"
+          }
+        },
+        {
+          "client_id": "644620063221-osuaif4f0rjbusv4g080i7j5ntclu16b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB34n8ctaRMGnWhpKS21syp8DmFe5F-1uk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644620063221-osuaif4f0rjbusv4g080i7j5ntclu16b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "644620063221-ka3kksbmtchnue6364smfdn0vkj0obco.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gi.flutterNotification"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644620063221:android:747237076d3693235890bc",
+        "android_client_info": {
+          "package_name": "com.gi.flutter_notification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "644620063221-m1hsku7t2g6c4jrhv7ugbv07jfno58ke.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gi.flutter_notification",
+            "certificate_hash": "666602ee32b0c4efe2ea4743e8e94d1fa0abd43e"
+          }
+        },
+        {
+          "client_id": "644620063221-osuaif4f0rjbusv4g080i7j5ntclu16b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB34n8ctaRMGnWhpKS21syp8DmFe5F-1uk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644620063221-osuaif4f0rjbusv4g080i7j5ntclu16b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "644620063221-ka3kksbmtchnue6364smfdn0vkj0obco.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gi.flutterNotification"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644620063221:android:662e23f9713232575890bc",
+        "android_client_info": {
+          "package_name": "com.gi.giquiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "644620063221-ip1rphsg72eo3trd5icc68d3m4ehc0il.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gi.giquiz",
+            "certificate_hash": "666602ee32b0c4efe2ea4743e8e94d1fa0abd43e"
+          }
+        },
+        {
+          "client_id": "644620063221-osuaif4f0rjbusv4g080i7j5ntclu16b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB34n8ctaRMGnWhpKS21syp8DmFe5F-1uk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644620063221-osuaif4f0rjbusv4g080i7j5ntclu16b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "644620063221-ka3kksbmtchnue6364smfdn0vkj0obco.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gi.flutterNotification"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644620063221:android:6eddf229a13fd85d5890bc",
+        "android_client_info": {
+          "package_name": "com.gi.parentsecurity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "644620063221-ori1gan1phvgo8m0vsj4c1rlr9t1mum9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gi.parentsecurity",
+            "certificate_hash": "666602ee32b0c4efe2ea4743e8e94d1fa0abd43e"
+          }
+        },
+        {
+          "client_id": "644620063221-osuaif4f0rjbusv4g080i7j5ntclu16b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB34n8ctaRMGnWhpKS21syp8DmFe5F-1uk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644620063221-osuaif4f0rjbusv4g080i7j5ntclu16b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "644620063221-ka3kksbmtchnue6364smfdn0vkj0obco.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gi.flutterNotification"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644620063221:android:fc993f317d2fd06d5890bc",
+        "android_client_info": {
+          "package_name": "com.gi.smart_home"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "644620063221-t3kln9mt98p1t2jj6ij7i6jchr6r7lg7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gi.smart_home",
+            "certificate_hash": "666602ee32b0c4efe2ea4743e8e94d1fa0abd43e"
+          }
+        },
+        {
+          "client_id": "644620063221-osuaif4f0rjbusv4g080i7j5ntclu16b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB34n8ctaRMGnWhpKS21syp8DmFe5F-1uk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644620063221-osuaif4f0rjbusv4g080i7j5ntclu16b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "644620063221-ka3kksbmtchnue6364smfdn0vkj0obco.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gi.flutterNotification"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

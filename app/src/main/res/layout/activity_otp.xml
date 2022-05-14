@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    tools:context=".Registration.OTP">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/google_font"
+            android:gravity="center"
+            android:text="Tech Jobs"
+            android:textColor="@color/black"
+            android:textSize="30dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="30dp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="20dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/google_font"
+                    android:text="Confirm Your Mobile Number For Login"
+                    android:justificationMode="inter_word"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="15dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mobile NO"
+                    app:endIconMode="clear_text"
+                    app:startIconDrawable="@drawable/mobile">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/mobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="63dp"
+                        android:inputType="number"
+                        android:maxLength="10" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="15dp" />
+
+                <TextView
+                    android:id="@+id/SetError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="#EF0A0A" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="10dp" />
+
+                <Button
+                    android:id="@+id/submit"
+                    android:layout_width="@dimen/slide"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Submit"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</LinearLayout>
