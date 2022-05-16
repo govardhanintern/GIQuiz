@@ -45,17 +45,17 @@ public class Result extends AppCompatActivity {
         nonAttempt = getIntent().getStringExtra("nonAttempt");
         Attempt = Integer.parseInt(totalQuestion) - Integer.parseInt(nonAttempt) + "";
 
-        result.setText("Result : " + count + "/" + totalQuestion);
+        result.setText(count + "/" + totalQuestion);
         setTitle.setText(title);
-        nonAttemptText.setText("Non Attempt : " + nonAttempt);
-        attemptText.setText("Attempt : " + Attempt);
+        nonAttemptText.setText(nonAttempt);
+        attemptText.setText(Attempt);
 
 
         viewResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Result.this,ViewSummary.class);
-                intent.putExtra("title",title);
+                Intent intent = new Intent(Result.this, ViewSummary.class);
+                intent.putExtra("title", title);
                 startActivity(intent);
             }
         });

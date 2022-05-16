@@ -22,6 +22,9 @@ import com.gi.giquiz.Network.Retro;
 import com.gi.giquiz.Network.RetroInterface;
 import com.gi.giquiz.Pojo.SubjectPojo;
 import com.gi.giquiz.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,7 @@ public class HomeFragment extends Fragment {
     ProgressDialog progressDialog;
     TextView textError;
     AlertDialog.Builder builder;
+    private AdView adView;
 
     public HomeFragment() {
 
@@ -55,6 +59,11 @@ public class HomeFragment extends Fragment {
         subjectData = new ArrayList<>();
         progressDialog = new ProgressDialog(context);
         builder = new AlertDialog.Builder(context);
+
+        adView = view.findViewById(R.id.adManagerAdView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
         getSubjects();
         return view;
     }

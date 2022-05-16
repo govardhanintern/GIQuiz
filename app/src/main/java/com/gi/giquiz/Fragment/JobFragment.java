@@ -36,6 +36,8 @@ import com.gi.giquiz.Pojo.JobPojo;
 import com.gi.giquiz.Pojo.SalaryPojo;
 import com.gi.giquiz.Pojo.SkillPojo;
 import com.gi.giquiz.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
@@ -57,6 +59,8 @@ public class JobFragment extends Fragment {
     Button search;
     Spinner skillSpinner, citySpinner;
     ArrayList cityId, cityName, skillId, skillName;
+    TextView textError;
+    private AdView adView;
 
     public JobFragment() {
     }
@@ -65,18 +69,24 @@ public class JobFragment extends Fragment {
         this.context = context;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        context = container.getContext();
         View view = inflater.inflate(R.layout.job_fragment, null);
         jobRView = view.findViewById(R.id.jobRView);
         filter = view.findViewById(R.id.filter);
+        textError = view.findViewById(R.id.textError);
         jobRView.setLayoutManager(new LinearLayoutManager(context));
         jobData = new ArrayList<>();
         salaryData = new ArrayList<>();
         ExperienceData = new ArrayList<>();
         dialog = new ProgressDialog(context);
         bottomSheetDialog = new BottomSheetDialog(context);
+
+        adView = view.findViewById(R.id.adManagerAdView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
         setJob();
 
         filter.setOnClickListener(new View.OnClickListener() {
@@ -95,10 +105,17 @@ public class JobFragment extends Fragment {
         Retro.getRetrofit(context).create(RetroInterface.class).fetchJobData().enqueue(new Callback<List<JobPojo>>() {
             @Override
             public void onResponse(Call<List<JobPojo>> call, Response<List<JobPojo>> response) {
-                jobData = response.body();
-                JobAdapter adapter = new JobAdapter(jobData, context);
-                jobRView.setAdapter(adapter);
-                dialog.dismiss();
+                if (response.body().isEmpty()) {
+                    textError.setVisibility(View.VISIBLE);
+                    jobRView.setVisibility(View.GONE);
+                    dialog.dismiss();
+                } else {
+                    jobData = response.body();
+                    JobAdapter adapter = new JobAdapter(jobData, context);
+                    jobRView.setAdapter(adapter);
+                    dialog.dismiss();
+                }
+
             }
 
             @Override

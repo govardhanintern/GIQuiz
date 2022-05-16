@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.gi.giquiz.Adapter.SubTitleAdapter;
@@ -26,6 +27,12 @@ import com.gi.giquiz.Fragment.VideosFragment;
 import com.gi.giquiz.Network.Retro;
 import com.gi.giquiz.Network.RetroInterface;
 import com.gi.giquiz.Pojo.SubTitlePojo;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -42,6 +49,7 @@ public class SubjectTitle extends AppCompatActivity implements BottomNavigationV
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     Fragment fragment = null;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +70,7 @@ public class SubjectTitle extends AppCompatActivity implements BottomNavigationV
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment, fragment);
         fragmentTransaction.commit();
+        loadInterstitialAd();
     }
 
 
@@ -82,7 +91,7 @@ public class SubjectTitle extends AppCompatActivity implements BottomNavigationV
                 AppSetting.mcqTitle = "Program";
                 break;
             case R.id.videos:
-                fragment = new VideosFragment(this,subjectId);
+                fragment = new VideosFragment(this, subjectId);
                 fragmentTransaction.replace(R.id.fragment, fragment);
                 fragmentTransaction.commit();
                 AppSetting.mcqTitle = "Videos";
@@ -103,6 +112,46 @@ public class SubjectTitle extends AppCompatActivity implements BottomNavigationV
         getSupportActionBar().setTitle(Html.fromHtml("<font color = '#ffffff'>" + AppSetting.mcqTitle + "</font"));
 
         return true;
+    }
+
+    private void loadInterstitialAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        InterstitialAd.load(this, getString(R.string.interstitial_full_screen), adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdFailedToLoad(LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+                Log.d("yash-Ad", "Ad Failed");
+                mInterstitialAd = null;
+            }
+
+            @Override
+            public void onAdLoaded(InterstitialAd interstitialAd) {
+                super.onAdLoaded(interstitialAd);
+                Log.d("yash-Ad", "Ad Loaded Successfully");
+                mInterstitialAd = interstitialAd;
+                mInterstitialAd.show(SubjectTitle.this);
+                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        super.onAdDismissedFullScreenContent();
+                        Log.d("yash-Ad", "Ad Dismiss");
+                    }
+
+                    @Override
+                    public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                        super.onAdFailedToShowFullScreenContent(adError);
+                        Log.d("yash-Ad", "Ad failed");
+                    }
+
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        super.onAdShowedFullScreenContent();
+                        Log.d("yash-Ad", "Ad Loaded Successfully");
+                        mInterstitialAd = null;
+                    }
+                });
+            }
+        });
     }
 
     @Override

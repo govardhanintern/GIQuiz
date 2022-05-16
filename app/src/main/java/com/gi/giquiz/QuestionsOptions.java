@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gi.giquiz.AppStaticClass.AppSetting;
 import com.gi.giquiz.Network.Retro;
 import com.gi.giquiz.Network.RetroInterface;
 import com.gi.giquiz.Pojo.QuestionPojo;
@@ -38,6 +40,8 @@ public class QuestionsOptions extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions_options);
+
+        getSupportActionBar().setTitle(Html.fromHtml("<font color='#ffffff'>GI Quiz</font>"));
 
         question = findViewById(R.id.question);
         a = findViewById(R.id.a);
