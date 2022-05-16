@@ -18,6 +18,8 @@ import com.gi.giquiz.Network.Retro;
 import com.gi.giquiz.Network.RetroInterface;
 import com.gi.giquiz.Pojo.QuestionPojo;
 import com.gi.giquiz.db.QuestionDB;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,7 @@ public class QuestionsOptions extends AppCompatActivity {
     TextView question, heading, qCount, op_c, op_d;
     RadioButton a, b, c, d;
     Button next, previous, submit;
-
+    private AdView adView;
     int count = 0;
     String titleId, title, totalQuestion;
     String answerValue = "";
@@ -60,7 +62,9 @@ public class QuestionsOptions extends AppCompatActivity {
         title = getIntent().getStringExtra("title");
         heading.setText(title);
         dialog = new ProgressDialog(this);
-
+        adView = findViewById(R.id.adManagerAdView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
         a.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

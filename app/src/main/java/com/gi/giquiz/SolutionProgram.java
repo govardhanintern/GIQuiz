@@ -32,6 +32,12 @@ import android.widget.Toast;
 import com.gi.giquiz.Network.Retro;
 import com.gi.giquiz.Network.RetroInterface;
 import com.gi.giquiz.Pojo.ProgramPojo;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
@@ -51,6 +57,7 @@ public class SolutionProgram extends AppCompatActivity {
     TextView proQue, proSolution, setError;
     String programNo, programQuestion, proId;
     ScrollView scroll;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +81,7 @@ public class SolutionProgram extends AppCompatActivity {
         programQuestion = getIntent().getStringExtra("programQuestion");
         proId = getIntent().getStringExtra("proId");
         setProSolution();
+        loadInterstitialAd();
     }
 
     public void setProSolution() {
@@ -158,8 +166,45 @@ public class SolutionProgram extends AppCompatActivity {
             Toast.makeText(this, "Sorry.", Toast.LENGTH_SHORT).show();
         }
         document.close();
-
     }
 
+    private void loadInterstitialAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        InterstitialAd.load(this, getString(R.string.rewarded_video), adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdFailedToLoad(LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+                Log.d("yash-Ad", "Ad Failed");
+                mInterstitialAd = null;
+            }
 
+            @Override
+            public void onAdLoaded(InterstitialAd interstitialAd) {
+                super.onAdLoaded(interstitialAd);
+                Log.d("yash-Ad", "Ad Loaded Successfully");
+                mInterstitialAd = interstitialAd;
+                mInterstitialAd.show(SolutionProgram.this);
+                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        super.onAdDismissedFullScreenContent();
+                        Log.d("yash-Ad", "Ad Dismiss");
+                    }
+
+                    @Override
+                    public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                        super.onAdFailedToShowFullScreenContent(adError);
+                        Log.d("yash-Ad", "Ad failed");
+                    }
+
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        super.onAdShowedFullScreenContent();
+                        Log.d("yash-Ad", "Ad Loaded Successfully");
+                        mInterstitialAd = null;
+                    }
+                });
+            }
+        });
+    }
 }

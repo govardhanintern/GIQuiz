@@ -96,12 +96,12 @@ public class SubjectTitle extends AppCompatActivity implements BottomNavigationV
                 fragmentTransaction.commit();
                 AppSetting.mcqTitle = "Videos";
                 break;
-            case R.id.preview:
+          /*  case R.id.preview:
                 fragment = new PreviewFragment(this);
                 fragmentTransaction.replace(R.id.fragment, fragment);
                 fragmentTransaction.commit();
                 AppSetting.mcqTitle = "Preview";
-                break;
+                break;*/
             case R.id.inExam:
                 fragment = new InfoExamFragment(this);
                 fragmentTransaction.replace(R.id.fragment, fragment);

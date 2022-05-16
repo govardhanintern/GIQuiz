@@ -17,10 +17,10 @@
         android:icon="@drawable/video"
         android:title="Videos" />
 
-    <item
+    <!--<item
         android:id="@+id/preview"
         android:icon="@drawable/preview"
-        android:title="Preview Exam" />
+        android:title="Preview Exam" />-->
 
     <item
         android:id="@+id/inExam"
