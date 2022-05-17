@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +35,7 @@ public class SubjectTitleFragment extends Fragment {
     String subjectId;
     String status = "MCQ";
     ProgressDialog dialog;
+    TextView textError;
 
     public SubjectTitleFragment() {
 
@@ -49,6 +51,7 @@ public class SubjectTitleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.subject_title_fragment, null);
         titleRView = view.findViewById(R.id.titleRView);
+        textError = view.findViewById(R.id.textError);
         titleRView.setLayoutManager(new LinearLayoutManager(context));
         subTitleData = new ArrayList<>();
         dialog = new ProgressDialog(context);
@@ -62,10 +65,16 @@ public class SubjectTitleFragment extends Fragment {
         Retro.getRetrofit(getContext()).create(RetroInterface.class).fetchSubTitle(subjectId).enqueue(new Callback<List<SubTitlePojo>>() {
             @Override
             public void onResponse(Call<List<SubTitlePojo>> call, Response<List<SubTitlePojo>> response) {
-                subTitleData = response.body();
-                SubTitleAdapter adapter = new SubTitleAdapter(subTitleData, context, status);
-                titleRView.setAdapter(adapter);
-                dialog.dismiss();
+                if (response.body().isEmpty()) {
+                    textError.setVisibility(View.VISIBLE);
+                    titleRView.setVisibility(View.GONE);
+                    dialog.dismiss();
+                } else {
+                    subTitleData = response.body();
+                    SubTitleAdapter adapter = new SubTitleAdapter(subTitleData, context, status);
+                    titleRView.setAdapter(adapter);
+                    dialog.dismiss();
+                }
             }
 
             @Override

@@ -9,6 +9,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +30,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class QuestionsOptions extends AppCompatActivity {
-    TextView question, heading, qCount, op_c, op_d;
+    TextView question, heading, qCount, op_c, op_d, textError;
     RadioButton a, b, c, d;
     Button next, previous, submit;
     private AdView adView;
@@ -37,6 +38,7 @@ public class QuestionsOptions extends AppCompatActivity {
     String titleId, title, totalQuestion;
     String answerValue = "";
     ProgressDialog dialog;
+    LinearLayout mainView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,8 @@ public class QuestionsOptions extends AppCompatActivity {
         b = findViewById(R.id.b);
         c = findViewById(R.id.c);
         d = findViewById(R.id.d);
+        mainView = findViewById(R.id.mainView);
+        textError = findViewById(R.id.textError);
         heading = findViewById(R.id.heading);
         qCount = findViewById(R.id.qCount);
         op_c = findViewById(R.id.c_op);
@@ -156,10 +160,20 @@ public class QuestionsOptions extends AppCompatActivity {
         Retro.getRetrofit(this).create(RetroInterface.class).fetchQuestionOptions(titleId).enqueue(new Callback<List<QuestionPojo>>() {
             @Override
             public void onResponse(Call<List<QuestionPojo>> call, Response<List<QuestionPojo>> response) {
-                QuestionDB.questionData = response.body();
-                setValues(count, QuestionDB.questionData, QuestionDB.questionData.size());
-                totalQuestion = QuestionDB.questionData.size() + "";
-                dialog.dismiss();
+                if (response.body().isEmpty()) {
+                    textError.setVisibility(View.VISIBLE);
+                    mainView.setVisibility(View.GONE);
+                    next.setVisibility(View.GONE);
+                    previous.setVisibility(View.GONE);
+                    submit.setVisibility(View.GONE);
+                    dialog.dismiss();
+                } else {
+                    QuestionDB.questionData = response.body();
+                    setValues(count, QuestionDB.questionData, QuestionDB.questionData.size());
+                    totalQuestion = QuestionDB.questionData.size() + "";
+                    dialog.dismiss();
+                }
+
             }
 
             @Override

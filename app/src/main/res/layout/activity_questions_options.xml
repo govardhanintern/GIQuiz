@@ -19,6 +19,7 @@
         tools:ignore="NotSibling" />
 
     <LinearLayout
+        android:id="@+id/mainView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/rel"
@@ -230,4 +231,14 @@
             android:visibility="gone" />
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="Sorry No Data Available"
+        android:textColor="@color/black"
+        android:visibility="gone" />
 </RelativeLayout>

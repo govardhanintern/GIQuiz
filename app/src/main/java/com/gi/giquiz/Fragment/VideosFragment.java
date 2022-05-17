@@ -40,11 +40,12 @@ public class VideosFragment extends Fragment {
     String subjectId;
     String status = "Video";
     ProgressDialog dialog;
+    TextView textError;
 
     public VideosFragment() {
     }
 
-    public VideosFragment(Context context,String subjectId) {
+    public VideosFragment(Context context, String subjectId) {
         this.context = context;
         this.subjectId = subjectId;
     }
@@ -53,6 +54,7 @@ public class VideosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.video_fragment, null);
 
+        textError = view.findViewById(R.id.textError);
         videoRView = view.findViewById(R.id.videoRView);
         videoRView.setLayoutManager(new LinearLayoutManager(context));
         subTitleData = new ArrayList<>();
@@ -67,10 +69,16 @@ public class VideosFragment extends Fragment {
         Retro.getRetrofit(getContext()).create(RetroInterface.class).fetchSubTitle(subjectId).enqueue(new Callback<List<SubTitlePojo>>() {
             @Override
             public void onResponse(Call<List<SubTitlePojo>> call, Response<List<SubTitlePojo>> response) {
-                subTitleData = response.body();
-                SubTitleAdapter adapter = new SubTitleAdapter(subTitleData, getContext(), status);
-                videoRView.setAdapter(adapter);
-                dialog.dismiss();
+                if (response.body().isEmpty()) {
+                    textError.setVisibility(View.VISIBLE);
+                    videoRView.setVisibility(View.GONE);
+                    dialog.dismiss();
+                } else {
+                    subTitleData = response.body();
+                    SubTitleAdapter adapter = new SubTitleAdapter(subTitleData, getContext(), status);
+                    videoRView.setAdapter(adapter);
+                    dialog.dismiss();
+                }
             }
 
             @Override
