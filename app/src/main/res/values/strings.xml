@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">GI Quiz</string>
-    <string name="IP">http://gisurat.co.in/GIQuiz/</string>
-    <string name="IP_SubImage">http://gisurat.co.in/GIQuiz/SubjectImage/</string>
-    <string name="IP_JobImage">http://gisurat.co.in/GIQuiz/JobImage/</string>
+    <string name="IP">http://gisurat.com/GIQuiz/</string>
+    <string name="IP_SubImage">http://gisurat.com/GIQuiz/SubjectImage/</string>
+    <string name="IP_JobImage">http://gisurat.com/GIQuiz/JobImage/</string>
     <string name="shared_file">MyFile</string>
 
 

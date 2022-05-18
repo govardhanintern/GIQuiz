@@ -2,11 +2,13 @@ package com.gi.giquiz;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -58,11 +60,14 @@ public class SolutionProgram extends AppCompatActivity {
     String programNo, programQuestion, proId;
     ScrollView scroll;
     private InterstitialAd mInterstitialAd;
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solution_program);
+
+        builder = new AlertDialog.Builder(this);
 
         getSupportActionBar().setTitle(Html.fromHtml("<font color = '#ffffff'>Solution</font>"));
 
@@ -81,7 +86,7 @@ public class SolutionProgram extends AppCompatActivity {
         programQuestion = getIntent().getStringExtra("programQuestion");
         proId = getIntent().getStringExtra("proId");
         setProSolution();
-        loadInterstitialAd();
+        // loadInterstitialAd();
     }
 
     public void setProSolution() {
@@ -121,7 +126,22 @@ public class SolutionProgram extends AppCompatActivity {
                 startActivity(Intent.createChooser(shareIntent, "Share via"));
                 return true;
             case R.id.download:
-                createPdf();
+                loadInterstitialAd();
+                builder.setMessage("Download as PDF?");
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        createPdf();
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
