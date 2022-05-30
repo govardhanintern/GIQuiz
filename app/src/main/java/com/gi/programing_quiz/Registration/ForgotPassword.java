@@ -2,12 +2,14 @@ package com.gi.programing_quiz.Registration;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.gi.programing_quiz.AlertMessage;
 import com.gi.programing_quiz.Network.Retro;
 import com.gi.programing_quiz.Network.RetroInterface;
 import com.gi.programing_quiz.R;
@@ -21,6 +23,7 @@ public class ForgotPassword extends AppCompatActivity {
     TextInputEditText newPass, confirmPass;
     Button submit;
     String mobile;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class ForgotPassword extends AppCompatActivity {
             c++;
         }
         if (c == 0) {
+            dialog = AlertMessage.showProgressDialog(ForgotPassword.this);
             if (newPass.getText().toString().equals(confirmPass.getText().toString())) {
                 Retro.getRetrofit(this).create(RetroInterface.class).forgotPassword(mobile, newPass.getText().toString()).enqueue(new Callback<String>() {
                     @Override
@@ -57,8 +61,10 @@ public class ForgotPassword extends AppCompatActivity {
                         if (response.body().equals("success")) {
                             Intent intent = new Intent(ForgotPassword.this, Login.class);
                             startActivity(intent);
+                            dialog.dismiss();
                         } else {
                             Toast.makeText(ForgotPassword.this, "Contact to admin", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
                         }
                     }
 
@@ -69,6 +75,7 @@ public class ForgotPassword extends AppCompatActivity {
                 });
             } else {
                 Toast.makeText(this, "Password Don't Match", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         }
     }
