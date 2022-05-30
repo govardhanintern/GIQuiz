@@ -1,13 +1,20 @@
 <resources>
-    <string name="app_name">GI Quiz</string>
+    <string name="app_name">Programing Quiz</string>
     <string name="IP">http://gisurat.com/GIQuiz/</string>
     <string name="IP_SubImage">http://gisurat.com/GIQuiz/SubjectImage/</string>
     <string name="IP_JobImage">http://gisurat.com/GIQuiz/JobImage/</string>
     <string name="shared_file">MyFile</string>
 
-
-    <string name="admob_app_id">ca-app-pub-3277930144309447~2300435488</string>
+    <!--test-->
+    <!--<string name="admob_app_id">ca-app-pub-3277930144309447~2300435488</string>
     <string name="banner_home_footer">ca-app-pub-3940256099942544/6300978111</string>
     <string name="interstitial_full_screen">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="rewarded_video">ca-app-pub-3940256099942544/8691691433</string>
+    <string name="rewarded_video">ca-app-pub-3940256099942544/8691691433</string>-->
+
+
+    <string name="admob_app_id">ca-app-pub-8708952486871722~8872590411</string>
+    <string name="banner_home_footer">ca-app-pub-8708952486871722/2229260637</string>
+    <string name="interstitial_full_screen">ca-app-pub-8708952486871722/7098443937</string>
+    <string name="rewarded_video">ca-app-pub-8708952486871722/9312709588</string>
+
 </resources>

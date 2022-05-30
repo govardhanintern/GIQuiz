@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gi.giquiz">
+    package="com.gi.programing_quiz">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -18,35 +18,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GIQuiz"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Registration.ForgotOTP"
+        <activity
+            android:name="com.gi.programing_quiz.Registration.ForgotOTP"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".Registration.OTP"
+            android:name="com.gi.programing_quiz.Registration.OTP"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".VideoPlayer"
+            android:name="com.gi.programing_quiz.VideoPlayer"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Registration.ForgotPassword" />
+        <activity android:name="com.gi.programing_quiz.Registration.ForgotPassword" />
         <activity
-            android:name=".Registration.CheckMobile"
+            android:name="com.gi.programing_quiz.Registration.CheckMobile"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".FilterActivity" />
-        <activity android:name=".JobDetails" />
-        <activity android:name=".SolutionProgram" />
-        <activity android:name=".ViewSummary" />
-        <activity android:name=".ProgramList" />
+        <activity android:name="com.gi.programing_quiz.FilterActivity" />
+        <activity android:name="com.gi.programing_quiz.JobDetails" />
+        <activity android:name="com.gi.programing_quiz.SolutionProgram" />
+        <activity android:name="com.gi.programing_quiz.ViewSummary" />
+        <activity android:name="com.gi.programing_quiz.ProgramList" />
         <activity
-            android:name=".Registration.Login"
+            android:name="com.gi.programing_quiz.Registration.Login"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Result" />
-        <activity android:name=".QuestionsOptions" />
+        <activity android:name="com.gi.programing_quiz.Result" />
+        <activity android:name="com.gi.programing_quiz.QuestionsOptions" />
         <activity
-            android:name=".Registration.SignUp"
+            android:name="com.gi.programing_quiz.Registration.SignUp"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SubjectTitle" />
-        <activity android:name=".Home"></activity>
+        <activity android:name="com.gi.programing_quiz.SubjectTitle" />
+        <activity android:name="com.gi.programing_quiz.Home"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.gi.programing_quiz.MainActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -55,10 +56,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3277930144309447~2300435488"/>
-        <service android:name=".Notification.MyFireBaseMessagingService">
+            android:value="ca-app-pub-8708952486871722~8872590411" />
+        <!--<meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3277930144309447~2300435488" />-->
+        <service android:name="com.gi.programing_quiz.Notification.MyFireBaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
