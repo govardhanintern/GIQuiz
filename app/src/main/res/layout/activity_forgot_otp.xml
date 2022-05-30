@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/google_font"
             android:gravity="center"
-            android:text="GI Quiz"
+            android:text="Programing Quiz"
             android:textColor="@color/black"
             android:textSize="30dp" />
 
