@@ -50,6 +50,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
+
 public class SolutionProgram extends AppCompatActivity {
     TextView proQue, proSolution, setError;
     String programNo, programQuestion, proId;
@@ -152,7 +154,7 @@ public class SolutionProgram extends AppCompatActivity {
     public void createPdf() {
         String question = proQue.getText().toString();
         String solution = proSolution.getText().toString();
-        String path = this.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/" + "gi_quiz_" + programNo + ".pdf";
+        String path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS) + "/" + "gi_quiz_" + programNo + ".pdf";
         Log.d("gilog", path);
         File file = new File(path);
         if (!file.exists()) {
