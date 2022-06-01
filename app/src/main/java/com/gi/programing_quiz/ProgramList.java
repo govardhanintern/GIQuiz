@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -16,6 +18,10 @@ import com.gi.programing_quiz.Adapter.ProQueAdapter;
 import com.gi.programing_quiz.Network.Retro;
 import com.gi.programing_quiz.Network.RetroInterface;
 import com.gi.programing_quiz.Pojo.ProgramPojo;
+import com.gi.programing_quiz.Registration.Login;
+import com.gi.programing_quiz.SharedPrefrence.SharedPre;
+import com.gi.programing_quiz.StaticFunction.ErrorDialog;
+import com.gi.programing_quiz.StaticFunction.ErrorLogs;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
@@ -38,11 +44,14 @@ public class ProgramList extends AppCompatActivity {
     TextView noData;
     ProgressDialog dialog;
     private InterstitialAd mInterstitialAd;
+    AlertDialog.Builder builder;
+    SharedPre sharedPre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_program_list);
+
 
         getSupportActionBar().setTitle(Html.fromHtml("<font color = '#ffffff'>GI Quiz</font>"));
 
@@ -50,6 +59,7 @@ public class ProgramList extends AppCompatActivity {
         programRView = findViewById(R.id.programRView);
         programRView.setLayoutManager(new LinearLayoutManager(this));
         programData = new ArrayList<>();
+        sharedPre = new SharedPre(this);
         titleId = getIntent().getStringExtra("titleId");
         dialog = new ProgressDialog(this);
         setProgramQues();
@@ -62,21 +72,32 @@ public class ProgramList extends AppCompatActivity {
         Retro.getRetrofit(this).create(RetroInterface.class).fetchProgramQue(titleId).enqueue(new Callback<List<ProgramPojo>>() {
             @Override
             public void onResponse(Call<List<ProgramPojo>> call, Response<List<ProgramPojo>> response) {
-                if (response.body().isEmpty()) {
-                    noData.setVisibility(View.VISIBLE);
-                    programRView.setVisibility(View.GONE);
+                try {
+                    if (response.body().isEmpty()) {
+                        noData.setVisibility(View.VISIBLE);
+                        programRView.setVisibility(View.GONE);
+                        dialog.dismiss();
+                    } else {
+                        programData = response.body();
+                        ProQueAdapter adapter = new ProQueAdapter(programData, ProgramList.this);
+                        programRView.setAdapter(adapter);
+                        dialog.dismiss();
+                    }
+                } catch (Exception e) {
+                    ErrorLogs.insertLogs(ProgramList.this, sharedPre.readData("userID", ""), e.toString());
                     dialog.dismiss();
-                } else {
-                    programData = response.body();
-                    ProQueAdapter adapter = new ProQueAdapter(programData, ProgramList.this);
-                    programRView.setAdapter(adapter);
-                    dialog.dismiss();
+                    builder = ErrorDialog.showBuilder(ProgramList.this);
+                    builder.show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<ProgramPojo>> call, Throwable t) {
-
+                ErrorLogs.insertLogs(ProgramList.this, sharedPre.readData("userID", ""), t.toString());
+                dialog.dismiss();
+                builder = ErrorDialog.showBuilder(ProgramList.this);
+                builder.show();
+                Log.e("check", t.toString());
             }
         });
     }

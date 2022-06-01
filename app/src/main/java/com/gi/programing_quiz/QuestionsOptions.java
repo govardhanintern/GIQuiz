@@ -2,10 +2,12 @@ package com.gi.programing_quiz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -15,6 +17,10 @@ import android.widget.TextView;
 import com.gi.programing_quiz.Network.Retro;
 import com.gi.programing_quiz.Network.RetroInterface;
 import com.gi.programing_quiz.Pojo.QuestionPojo;
+import com.gi.programing_quiz.Registration.Login;
+import com.gi.programing_quiz.SharedPrefrence.SharedPre;
+import com.gi.programing_quiz.StaticFunction.ErrorDialog;
+import com.gi.programing_quiz.StaticFunction.ErrorLogs;
 import com.gi.programing_quiz.db.QuestionDB;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -35,6 +41,8 @@ public class QuestionsOptions extends AppCompatActivity {
     String answerValue = "";
     ProgressDialog dialog;
     LinearLayout mainView;
+    AlertDialog.Builder builder;
+    SharedPre sharedPre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +65,7 @@ public class QuestionsOptions extends AppCompatActivity {
         next = findViewById(R.id.next);
         submit = findViewById(R.id.submit);
         previous = findViewById(R.id.previous);
+        sharedPre = new SharedPre(this);
         // questionData = new ArrayList<>();
         titleId = getIntent().getStringExtra("titleId");
         title = getIntent().getStringExtra("title");
@@ -135,18 +144,13 @@ public class QuestionsOptions extends AppCompatActivity {
     }
 
     void setRadioValue(boolean value1, boolean value2, boolean value3, boolean value4, String opValue) {
-        try {
-            a.setChecked(value1);
-            b.setChecked(value2);
-            c.setChecked(value3);
-            d.setChecked(value4);
-            answerValue = opValue;
-            if (opValue != "") {
-                QuestionDB.questionData.get(count).setUser_answer(opValue);
-            }
-
-        } catch (Exception e) {
-
+        a.setChecked(value1);
+        b.setChecked(value2);
+        c.setChecked(value3);
+        d.setChecked(value4);
+        answerValue = opValue;
+        if (opValue != "") {
+            QuestionDB.questionData.get(count).setUser_answer(opValue);
         }
     }
 
@@ -156,25 +160,38 @@ public class QuestionsOptions extends AppCompatActivity {
         Retro.getRetrofit(this).create(RetroInterface.class).fetchQuestionOptions(titleId).enqueue(new Callback<List<QuestionPojo>>() {
             @Override
             public void onResponse(Call<List<QuestionPojo>> call, Response<List<QuestionPojo>> response) {
-                if (response.body().isEmpty()) {
-                    textError.setVisibility(View.VISIBLE);
-                    mainView.setVisibility(View.GONE);
-                    next.setVisibility(View.GONE);
-                    previous.setVisibility(View.GONE);
-                    submit.setVisibility(View.GONE);
-                    dialog.dismiss();
-                } else {
-                    QuestionDB.questionData = response.body();
-                    setValues(count, QuestionDB.questionData, QuestionDB.questionData.size());
-                    totalQuestion = QuestionDB.questionData.size() + "";
+                try {
+                    if (response.body().isEmpty()) {
+                        textError.setVisibility(View.VISIBLE);
+                        mainView.setVisibility(View.GONE);
+                        next.setVisibility(View.GONE);
+                        previous.setVisibility(View.GONE);
+                        submit.setVisibility(View.GONE);
+                        dialog.dismiss();
+                    } else {
+                        QuestionDB.questionData = response.body();
+                        setValues(count, QuestionDB.questionData, QuestionDB.questionData.size());
+                        totalQuestion = QuestionDB.questionData.size() + "";
+                        dialog.dismiss();
+                    }
+                } catch (Exception e) {
+
+                    ErrorLogs.insertLogs(QuestionsOptions.this, sharedPre.readData("userID", ""), e.toString());
+                    builder = ErrorDialog.showBuilder(QuestionsOptions.this);
+                    builder.show();
                     dialog.dismiss();
                 }
+
 
             }
 
             @Override
             public void onFailure(Call<List<QuestionPojo>> call, Throwable t) {
-
+                Log.e("gilog", t.toString());
+                ErrorLogs.insertLogs(QuestionsOptions.this, sharedPre.readData("userID", ""), t.toString());
+                builder = ErrorDialog.showBuilder(QuestionsOptions.this);
+                builder.show();
+                dialog.dismiss();
             }
         });
     }

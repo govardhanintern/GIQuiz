@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 import com.gi.programing_quiz.Network.Retro;
 import com.gi.programing_quiz.Network.RetroInterface;
 import com.gi.programing_quiz.Pojo.ProgramPojo;
+import com.gi.programing_quiz.StaticFunction.ErrorDialog;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
@@ -150,7 +152,7 @@ public class SolutionProgram extends AppCompatActivity {
     public void createPdf() {
         String question = proQue.getText().toString();
         String solution = proSolution.getText().toString();
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + "gi_quiz_" + programNo + ".pdf";
+        String path = this.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/" + "gi_quiz_" + programNo + ".pdf";
         Log.d("gilog", path);
         File file = new File(path);
         if (!file.exists()) {

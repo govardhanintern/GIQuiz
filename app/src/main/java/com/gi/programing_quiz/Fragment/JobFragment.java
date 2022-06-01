@@ -1,5 +1,6 @@
 package com.gi.programing_quiz.Fragment;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +32,10 @@ import com.gi.programing_quiz.Pojo.JobPojo;
 import com.gi.programing_quiz.Pojo.SalaryPojo;
 import com.gi.programing_quiz.Pojo.SkillPojo;
 import com.gi.programing_quiz.R;
+import com.gi.programing_quiz.Registration.Login;
+import com.gi.programing_quiz.SharedPrefrence.SharedPre;
+import com.gi.programing_quiz.StaticFunction.ErrorDialog;
+import com.gi.programing_quiz.StaticFunction.ErrorLogs;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -56,6 +61,8 @@ public class JobFragment extends Fragment {
     ArrayList cityId, cityName, skillId, skillName;
     TextView textError;
     private AdView adView;
+    AlertDialog.Builder builder;
+    SharedPre sharedPre;
 
     public JobFragment() {
     }
@@ -77,7 +84,7 @@ public class JobFragment extends Fragment {
         ExperienceData = new ArrayList<>();
         dialog = new ProgressDialog(context);
         bottomSheetDialog = new BottomSheetDialog(context);
-
+        sharedPre = new SharedPre(context);
         adView = view.findViewById(R.id.adManagerAdView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
@@ -100,22 +107,31 @@ public class JobFragment extends Fragment {
         Retro.getRetrofit(context).create(RetroInterface.class).fetchJobData().enqueue(new Callback<List<JobPojo>>() {
             @Override
             public void onResponse(Call<List<JobPojo>> call, Response<List<JobPojo>> response) {
-                if (response.body().isEmpty()) {
-                    textError.setVisibility(View.VISIBLE);
-                    jobRView.setVisibility(View.GONE);
-                    dialog.dismiss();
-                } else {
-                    jobData = response.body();
-                    JobAdapter adapter = new JobAdapter(jobData, context);
-                    jobRView.setAdapter(adapter);
+                try {
+                    if (response.body().isEmpty()) {
+                        textError.setVisibility(View.VISIBLE);
+                        jobRView.setVisibility(View.GONE);
+                        dialog.dismiss();
+                    } else {
+                        jobData = response.body();
+                        JobAdapter adapter = new JobAdapter(jobData, context);
+                        jobRView.setAdapter(adapter);
+                        dialog.dismiss();
+                    }
+                } catch (Exception e) {
+                    ErrorLogs.insertLogs(context, sharedPre.readData("userID", ""), e.toString());
+                    builder = ErrorDialog.showBuilder(context);
+                    builder.show();
                     dialog.dismiss();
                 }
-
             }
 
             @Override
             public void onFailure(Call<List<JobPojo>> call, Throwable t) {
-
+                ErrorLogs.insertLogs(context, sharedPre.readData("userID", ""), t.toString());
+                builder = ErrorDialog.showBuilder(context);
+                builder.show();
+                dialog.dismiss();
             }
         });
     }

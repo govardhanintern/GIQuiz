@@ -2,7 +2,7 @@ package com.gi.programing_quiz.Registration;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,13 +11,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gi.programing_quiz.AlertMessage;
+import com.gi.programing_quiz.StaticFunction.AlertMessage;
 import com.gi.programing_quiz.Home;
 import com.gi.programing_quiz.Network.Retro;
 import com.gi.programing_quiz.Network.RetroInterface;
 import com.gi.programing_quiz.Pojo.UserPojo;
 import com.gi.programing_quiz.R;
 import com.gi.programing_quiz.SharedPrefrence.SharedPre;
+import com.gi.programing_quiz.StaticFunction.ErrorDialog;
+import com.gi.programing_quiz.StaticFunction.ErrorLogs;
 import com.google.android.material.textfield.TextInputEditText;
 
 import retrofit2.Call;
@@ -30,6 +32,7 @@ public class Login extends AppCompatActivity {
     Button login;
     SharedPre sharedPre;
     ProgressDialog dialog;
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,21 +89,29 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<UserPojo> call, Response<UserPojo> response) {
                         UserPojo pojo = response.body();
-                        if (pojo.getStatus().equals("success")) {
-                            sharedPre.writeData("userID", pojo.getUser_id());
-                            sharedPre.writeData("status", "LoggedIn");
-                            Intent intent = new Intent(Login.this, Home.class);
-                            startActivity(intent);
+                        try {
+                            if (pojo.getStatus().equals("success")) {
+                                sharedPre.writeData("userID", pojo.getUser_id());
+                                sharedPre.writeData("status", "LoggedIn");
+                                Intent intent = new Intent(Login.this, Home.class);
+                                startActivity(intent);
+                                dialog.dismiss();
+                            } else {
+                                dialog.dismiss();
+                                Toast.makeText(Login.this, "Wrong Credential", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            builder = ErrorDialog.showBuilder(Login.this);
+                            builder.show();
                             dialog.dismiss();
-                        } else {
-                            dialog.dismiss();
-                            Toast.makeText(Login.this, "Wrong Credential", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<UserPojo> call, Throwable t) {
-
+                        builder = ErrorDialog.showBuilder(Login.this);
+                        builder.show();
+                        dialog.dismiss();
                     }
                 });
             }

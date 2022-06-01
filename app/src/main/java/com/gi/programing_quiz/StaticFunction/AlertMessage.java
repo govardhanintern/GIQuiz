@@ -1,4 +1,4 @@
-package com.gi.programing_quiz;
+package com.gi.programing_quiz.StaticFunction;
 
 import android.app.ProgressDialog;
 import android.content.Context;

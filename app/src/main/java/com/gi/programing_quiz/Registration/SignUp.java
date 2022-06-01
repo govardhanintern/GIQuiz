@@ -1,5 +1,6 @@
 package com.gi.programing_quiz.Registration;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,10 +12,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.gi.programing_quiz.AlertMessage;
+import com.gi.programing_quiz.StaticFunction.AlertMessage;
 import com.gi.programing_quiz.Network.Retro;
 import com.gi.programing_quiz.Network.RetroInterface;
 import com.gi.programing_quiz.R;
+import com.gi.programing_quiz.StaticFunction.ErrorDialog;
+import com.gi.programing_quiz.StaticFunction.ErrorLogs;
 import com.google.android.material.textfield.TextInputEditText;
 
 import retrofit2.Call;
@@ -27,6 +30,7 @@ public class SignUp extends AppCompatActivity {
     TextView login;
     String userMobile;
     ProgressDialog dialog;
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,21 +81,31 @@ public class SignUp extends AppCompatActivity {
                 Retro.getRetrofit(this).create(RetroInterface.class).signup(name.getText().toString(), email.getText().toString(), userMobile, password.getText().toString()).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.body().equals("success")) {
-                            Intent intent = new Intent(SignUp.this, Login.class);
-                            startActivity(intent);
-                            dialog.dismiss();
-                        } else {
-                            Toast.makeText(SignUp.this, "Contact to admin", Toast.LENGTH_SHORT).show();
+                        try {
+                            if (response.body().equals("success")) {
+                                Intent intent = new Intent(SignUp.this, Login.class);
+                                startActivity(intent);
+                                dialog.dismiss();
+                            } else {
+                                Toast.makeText(SignUp.this, "Contact to admin", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+
+                        } catch (Exception e) {
+                            builder = ErrorDialog.showBuilder(SignUp.this);
+                            builder.show();
                             dialog.dismiss();
                         }
+
 
                     }
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
                         Log.d("gilog_signup", t.toString());
-
+                        builder = ErrorDialog.showBuilder(SignUp.this);
+                        builder.show();
+                        dialog.dismiss();
                     }
                 });
             } else {

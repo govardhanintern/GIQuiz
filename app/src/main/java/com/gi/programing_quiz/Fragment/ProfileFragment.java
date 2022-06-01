@@ -14,13 +14,15 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import com.gi.programing_quiz.AlertMessage;
+import com.gi.programing_quiz.StaticFunction.AlertMessage;
 import com.gi.programing_quiz.Network.Retro;
 import com.gi.programing_quiz.Network.RetroInterface;
 import com.gi.programing_quiz.Pojo.UserPojo;
 import com.gi.programing_quiz.R;
 import com.gi.programing_quiz.Registration.Login;
 import com.gi.programing_quiz.SharedPrefrence.SharedPre;
+import com.gi.programing_quiz.StaticFunction.ErrorDialog;
+import com.gi.programing_quiz.StaticFunction.ErrorLogs;
 import com.google.android.material.textfield.TextInputEditText;
 
 import retrofit2.Call;
@@ -70,12 +72,19 @@ public class ProfileFragment extends Fragment {
         Retro.getRetrofit(context).create(RetroInterface.class).getUserDetails(sharedPre.readData("userID", "")).enqueue(new Callback<UserPojo>() {
             @Override
             public void onResponse(Call<UserPojo> call, Response<UserPojo> response) {
-                setUserData(response.body());
-                dialog.dismiss();
+                try {
+                    setUserData(response.body());
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    builder = ErrorDialog.showBuilder(context);
+                    dialog.dismiss();
+                }
+
             }
 
             @Override
             public void onFailure(Call<UserPojo> call, Throwable t) {
+                builder = ErrorDialog.showBuilder(context);
                 dialog.dismiss();
             }
         });
@@ -92,26 +101,36 @@ public class ProfileFragment extends Fragment {
         Retro.getRetrofit(context).create(RetroInterface.class).updateUserData(sharedPre.readData("userID", ""), name.getText().toString(), email.getText().toString(), mobile.getText().toString()).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if (response.body().equals("success")) {
-                    builder.setMessage("User Details Updated Successfully");
-                    builder.setPositiveButton("OKAY", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            userData();
-                        }
-                    });
+                try {
+                    if (response.body().equals("success")) {
+                        builder.setMessage("User Details Updated Successfully");
+                        builder.setPositiveButton("OKAY", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                userData();
+                            }
+                        });
+                        builder.show();
+                        dialog.dismiss();
+                    } else {
+                        dialog.dismiss();
+                        Toast.makeText(context, "Contact to admin", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    ErrorLogs.insertLogs(context, sharedPre.readData("userID", ""), e.toString());
+                    builder = ErrorDialog.showBuilder(context);
                     builder.show();
                     dialog.dismiss();
-                } else {
-                    dialog.dismiss();
-                    Toast.makeText(context, "Contact to admin", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
+                ErrorLogs.insertLogs(context, sharedPre.readData("userID", ""), t.toString());
+                builder = ErrorDialog.showBuilder(context);
+                builder.show();
+                dialog.dismiss();
             }
         });
     }

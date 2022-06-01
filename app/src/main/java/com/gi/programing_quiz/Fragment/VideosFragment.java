@@ -1,5 +1,6 @@
 package com.gi.programing_quiz.Fragment;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -17,6 +18,10 @@ import com.gi.programing_quiz.Network.Retro;
 import com.gi.programing_quiz.Network.RetroInterface;
 import com.gi.programing_quiz.Pojo.SubTitlePojo;
 import com.gi.programing_quiz.R;
+import com.gi.programing_quiz.Registration.Login;
+import com.gi.programing_quiz.SharedPrefrence.SharedPre;
+import com.gi.programing_quiz.StaticFunction.ErrorDialog;
+import com.gi.programing_quiz.StaticFunction.ErrorLogs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +38,8 @@ public class VideosFragment extends Fragment {
     String status = "Video";
     ProgressDialog dialog;
     TextView textError;
+    AlertDialog.Builder builder;
+    SharedPre sharedPre;
 
     public VideosFragment() {
     }
@@ -50,6 +57,7 @@ public class VideosFragment extends Fragment {
         videoRView = view.findViewById(R.id.videoRView);
         videoRView.setLayoutManager(new LinearLayoutManager(context));
         subTitleData = new ArrayList<>();
+        sharedPre = new SharedPre(context);
         dialog = new ProgressDialog(context);
         setSubTitleData();
         return view;
@@ -61,21 +69,31 @@ public class VideosFragment extends Fragment {
         Retro.getRetrofit(getContext()).create(RetroInterface.class).fetchSubTitle(subjectId).enqueue(new Callback<List<SubTitlePojo>>() {
             @Override
             public void onResponse(Call<List<SubTitlePojo>> call, Response<List<SubTitlePojo>> response) {
-                if (response.body().isEmpty()) {
-                    textError.setVisibility(View.VISIBLE);
-                    videoRView.setVisibility(View.GONE);
-                    dialog.dismiss();
-                } else {
-                    subTitleData = response.body();
-                    SubTitleAdapter adapter = new SubTitleAdapter(subTitleData, getContext(), status);
-                    videoRView.setAdapter(adapter);
+                try {
+                    if (response.body().isEmpty()) {
+                        textError.setVisibility(View.VISIBLE);
+                        videoRView.setVisibility(View.GONE);
+                        dialog.dismiss();
+                    } else {
+                        subTitleData = response.body();
+                        SubTitleAdapter adapter = new SubTitleAdapter(subTitleData, getContext(), status);
+                        videoRView.setAdapter(adapter);
+                        dialog.dismiss();
+                    }
+                } catch (Exception e) {
+                    ErrorLogs.insertLogs(context, sharedPre.readData("userID", ""), e.toString());
+                    builder = ErrorDialog.showBuilder(context);
+                    builder.show();
                     dialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<List<SubTitlePojo>> call, Throwable t) {
-
+                ErrorLogs.insertLogs(context, sharedPre.readData("userID", ""), t.toString());
+                builder = ErrorDialog.showBuilder(context);
+                builder.show();
+                dialog.dismiss();
             }
         });
     }

@@ -24,7 +24,10 @@ import com.gi.programing_quiz.Fragment.ProfileFragment;
 import com.gi.programing_quiz.Network.Retro;
 import com.gi.programing_quiz.Network.RetroInterface;
 import com.gi.programing_quiz.Registration.Login;
+import com.gi.programing_quiz.Registration.SignUp;
 import com.gi.programing_quiz.SharedPrefrence.SharedPre;
+import com.gi.programing_quiz.StaticFunction.ErrorDialog;
+import com.gi.programing_quiz.StaticFunction.ErrorLogs;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -72,12 +75,22 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
                         Retro.getRetrofit(Home.this).create(RetroInterface.class).insertKey(task.getResult()).enqueue(new Callback<String>() {
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
-                                Log.d("gilog", response.toString());
+                                try {
+                                    Log.d("gilog", response.toString());
+                                    Log.d("gilog", response.body().toString());
+                                } catch (Exception e) {
+                                    ErrorLogs.insertLogs(Home.this, sharedPre.readData("userID", ""), e.toString());
+                                    builder = ErrorDialog.showBuilder(Home.this);
+                                    builder.show();
+                                }
                             }
 
                             @Override
                             public void onFailure(Call<String> call, Throwable t) {
+                                ErrorLogs.insertLogs(Home.this, sharedPre.readData("userID", ""), t.toString());
                                 Log.d("gilog", t.toString());
+                                builder = ErrorDialog.showBuilder(Home.this);
+                                builder.show();
                             }
                         });
 

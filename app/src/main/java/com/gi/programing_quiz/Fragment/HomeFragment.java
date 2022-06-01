@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,15 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gi.programing_quiz.Adapter.SubjectAdapter;
-import com.gi.programing_quiz.AlertMessage;
+import com.gi.programing_quiz.Registration.Login;
+import com.gi.programing_quiz.SharedPrefrence.SharedPre;
+import com.gi.programing_quiz.StaticFunction.AlertMessage;
 import com.gi.programing_quiz.Network.Retro;
 import com.gi.programing_quiz.Network.RetroInterface;
 import com.gi.programing_quiz.Pojo.SubjectPojo;
 import com.gi.programing_quiz.R;
+import com.gi.programing_quiz.StaticFunction.ErrorDialog;
+import com.gi.programing_quiz.StaticFunction.ErrorLogs;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -39,6 +42,7 @@ public class HomeFragment extends Fragment {
     TextView textError;
     AlertDialog.Builder builder;
     private AdView adView;
+    SharedPre sharedPre;
 
     public HomeFragment() {
 
@@ -50,12 +54,13 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        context = container.getContext();
         View view = inflater.inflate(R.layout.home_fragment, null);
         textError = view.findViewById(R.id.textError);
         subjectRView = view.findViewById(R.id.subjectRView);
         subjectRView.setLayoutManager(new GridLayoutManager(context, 2));
         subjectData = new ArrayList<>();
-        builder = new AlertDialog.Builder(context);
+        sharedPre = new SharedPre(context);
 
         adView = view.findViewById(R.id.adManagerAdView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -66,7 +71,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void getSubjects() {
-       dialog = AlertMessage.showProgressDialog(context);
+        dialog = AlertMessage.showProgressDialog(context);
         Retro.getRetrofit(getContext()).create(RetroInterface.class).fetchSubjects().enqueue(new Callback<List<SubjectPojo>>() {
             @Override
             public void onResponse(Call<List<SubjectPojo>> call, Response<List<SubjectPojo>> response) {
@@ -82,20 +87,19 @@ public class HomeFragment extends Fragment {
                         dialog.dismiss();
                     }
                 } catch (Exception e) {
-                    builder.setMessage("Something wants to wrong with server please try again letter");
-                    builder.setPositiveButton("OKAY", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            dialog.dismiss();
-                        }
-                    });
+                    ErrorLogs.insertLogs(context, sharedPre.readData("userID", ""), e.toString());
+                    dialog.dismiss();
+                    builder = ErrorDialog.showBuilder(context);
+                    builder.show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<SubjectPojo>> call, Throwable t) {
-                Log.d("gilog", t.toString());
+                ErrorLogs.insertLogs(context, sharedPre.readData("userID", ""), t.toString());
+                dialog.dismiss();
+                builder = ErrorDialog.showBuilder(context);
+                builder.show();
             }
         });
     }

@@ -104,4 +104,8 @@ public interface RetroInterface {
     @FormUrlEncoded
     @POST("fetchVideoLink.php")
     Call<LinkPojo> fetchVideoLink(@Field("sub_title_id") String sub_title_id);
+
+    @FormUrlEncoded
+    @POST("insert_logs.php")
+    Call<LinkPojo> insert_logs(@Field("user_id") String user_id, @Field("error") String error);
 }
