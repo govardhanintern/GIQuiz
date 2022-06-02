@@ -154,7 +154,7 @@ public class SolutionProgram extends AppCompatActivity {
     public void createPdf() {
         String question = proQue.getText().toString();
         String solution = proSolution.getText().toString();
-        String path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS) + "/" + "gi_quiz_" + programNo + ".pdf";
+        String path = Environment.getExternalStorageDirectory().toString() + "/Download/" + "/" + "gi_quiz_" + programNo + ".pdf";
         Log.d("gilog", path);
         File file = new File(path);
         if (!file.exists()) {
