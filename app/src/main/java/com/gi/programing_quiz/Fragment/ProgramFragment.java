@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,8 @@ public class ProgramFragment extends Fragment {
         subTitleData = new ArrayList<>();
         sharedPre = new SharedPre(context);
         dialog = new ProgressDialog(context);
+
+
         setSubTitleData();
         return view;
     }

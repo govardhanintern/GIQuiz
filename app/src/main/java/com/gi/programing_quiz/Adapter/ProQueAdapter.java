@@ -18,11 +18,13 @@ import java.util.List;
 
 public class ProQueAdapter extends RecyclerView.Adapter<ProQueAdapter.programHolder> {
     List<ProgramPojo> programData;
+    String title;
     Context context;
 
-    public ProQueAdapter(List<ProgramPojo> programData, Context context) {
+    public ProQueAdapter(List<ProgramPojo> programData, Context context, String title) {
         this.programData = programData;
         this.context = context;
+        this.title = title;
     }
 
     @Override
@@ -45,9 +47,10 @@ public class ProQueAdapter extends RecyclerView.Adapter<ProQueAdapter.programHol
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, SolutionProgram.class);
-                intent.putExtra("proId",holder.proId);
-                intent.putExtra("programNo",holder.programNo);
-                intent.putExtra("programQuestion",holder.programQuestion);
+                intent.putExtra("proId", holder.proId);
+                intent.putExtra("programNo", holder.programNo);
+                intent.putExtra("programQuestion", holder.programQuestion);
+                intent.putExtra("title", title);
                 context.startActivity(intent);
             }
         });

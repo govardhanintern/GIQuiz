@@ -54,10 +54,11 @@ import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class SolutionProgram extends AppCompatActivity {
     TextView proQue, proSolution, setError;
-    String programNo, programQuestion, proId;
+    String programNo, programQuestion, proId, title;
     ScrollView scroll;
     private InterstitialAd mInterstitialAd;
     AlertDialog.Builder builder;
+    AlertDialog.Builder builder1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class SolutionProgram extends AppCompatActivity {
         setContentView(R.layout.activity_solution_program);
 
         builder = new AlertDialog.Builder(this);
+        builder1 = new AlertDialog.Builder(this);
 
         getSupportActionBar().setTitle(Html.fromHtml("<font color = '#ffffff'>Solution</font>"));
 
@@ -82,6 +84,7 @@ public class SolutionProgram extends AppCompatActivity {
         programNo = getIntent().getStringExtra("programNo");
         programQuestion = getIntent().getStringExtra("programQuestion");
         proId = getIntent().getStringExtra("proId");
+        title = getIntent().getStringExtra("title");
         setProSolution();
         // loadInterstitialAd();
     }
@@ -124,7 +127,8 @@ public class SolutionProgram extends AppCompatActivity {
                 return true;
             case R.id.download:
                 loadInterstitialAd();
-                builder.setMessage("Download as PDF?");
+                builder.setTitle("Download");
+                builder.setMessage("Are you sure you want to Download this question and answer as a PDF?");
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -154,7 +158,7 @@ public class SolutionProgram extends AppCompatActivity {
     public void createPdf() {
         String question = proQue.getText().toString();
         String solution = proSolution.getText().toString();
-        String path = Environment.getExternalStorageDirectory().toString() + "/Download/" + "/" + "gi_quiz_" + programNo + ".pdf";
+        String path = Environment.getExternalStorageDirectory().toString() + "/Download/" + "Programing_Quiz_" + title + "_" + programNo + ".pdf";
         Log.d("gilog", path);
         File file = new File(path);
         if (!file.exists()) {
@@ -177,7 +181,15 @@ public class SolutionProgram extends AppCompatActivity {
             document.add(new Paragraph(question));
             document.add(new Paragraph("\n"));
             document.add(new Paragraph(solution));
-            Toast.makeText(this, "Exported Successfully", Toast.LENGTH_SHORT).show();
+            builder1.setMessage("PDF Download Successful..");
+            builder1.setPositiveButton("OKAY", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder1.show();
+            //Toast.makeText(this, "Exported Successfully", Toast.LENGTH_SHORT).show();
         } catch (DocumentException e) {
             e.printStackTrace();
             Toast.makeText(this, "Sorry.", Toast.LENGTH_SHORT).show();

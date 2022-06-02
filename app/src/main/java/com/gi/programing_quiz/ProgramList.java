@@ -39,7 +39,7 @@ import retrofit2.Response;
 public class ProgramList extends AppCompatActivity {
 
     RecyclerView programRView;
-    String titleId;
+    String titleId, title;
     List<ProgramPojo> programData;
     TextView noData;
     ProgressDialog dialog;
@@ -61,6 +61,7 @@ public class ProgramList extends AppCompatActivity {
         programData = new ArrayList<>();
         sharedPre = new SharedPre(this);
         titleId = getIntent().getStringExtra("titleId");
+        title = getIntent().getStringExtra("title");
         dialog = new ProgressDialog(this);
         setProgramQues();
         loadInterstitialAd();
@@ -79,7 +80,7 @@ public class ProgramList extends AppCompatActivity {
                         dialog.dismiss();
                     } else {
                         programData = response.body();
-                        ProQueAdapter adapter = new ProQueAdapter(programData, ProgramList.this);
+                        ProQueAdapter adapter = new ProQueAdapter(programData, ProgramList.this, title);
                         programRView.setAdapter(adapter);
                         dialog.dismiss();
                     }
